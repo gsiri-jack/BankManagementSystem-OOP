@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class HelperMethods {
     protected Random rand = new Random();
@@ -29,15 +30,42 @@ public class HelperMethods {
         return accounts;
     }
 
-        public List<TransactionDTO> generateTransaction(int num){
+        public List<TransactionDTO> generateTransaction(int num, List<BankAccount> bankAccounts){
             List<TransactionDTO> transactionDTOS= new ArrayList<>();
             for (int i=0; i<num; i++){
+                System.out.println(i);
                 int action = rand.nextInt(3)+1;
                 TransactionService transactionService = new TransactionServiceImpl();
-//                transactionService.selfTransaction()
+                TransactionDTO transactionDTO = new TransactionDTO();
+                if(action==1 || action == 2){
+                    System.out.println("self");
+                  transactionDTO = transactionService.selfTransaction(getRandomBankAccount(bankAccounts), getRandomAmount(), action);
+              } else {
+                    System.out.println("inter");
+                    transactionDTO = transactionService.interAccountTransaction(getTwoRandomBankAccount(bankAccounts).getFirst(), getTwoRandomBankAccount(bankAccounts).getLast(), getRandomAmount());
+                }
+                transactionDTOS.add(transactionDTO);
             }
             return transactionDTOS;
 
+        }
+
+        public BankAccount getRandomBankAccount(List<BankAccount> bankAccounts){
+            int index = rand.nextInt(bankAccounts.size());
+            return bankAccounts.get(index);
+        }
+
+        public List<BankAccount> getTwoRandomBankAccount(List<BankAccount> bankAccounts){
+            int num1 = ThreadLocalRandom.current().nextInt(0, bankAccounts.size());
+            int num2 = ThreadLocalRandom.current().nextInt(0, bankAccounts.size());
+            List<BankAccount> responseBankAccounts = new ArrayList<>();
+            responseBankAccounts.add(bankAccounts.get(num1));
+            responseBankAccounts.add(bankAccounts.get(num2));
+            return responseBankAccounts;
+        }
+
+        public int getRandomAmount(){
+        return rand.nextInt(500);
         }
 
 }
