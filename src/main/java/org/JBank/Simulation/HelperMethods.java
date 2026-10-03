@@ -1,21 +1,20 @@
 package org.JBank.Simulation;
 
 
-import org.JBank.Application.Bank;
-import org.JBank.Application.BankAccount;
+import org.JBank.Application.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.JBank.Application.BankAccount;
+
 import java.util.Random;
 
 public class HelperMethods {
-
+    protected Random rand = new Random();
     public List<BankAccount> accountGenerator(int num, Bank bank){
         List<BankAccount> accounts = new ArrayList<>();
         for(int i=1;i<=num; i++){
             long acc_number = 190000+i;
-            Random rand = new Random();
+
             int amount = rand.nextInt(501)+1000;
             try{
                 BankAccount bankAccount = new BankAccount(acc_number, amount, bank);
@@ -29,5 +28,16 @@ public class HelperMethods {
 
         return accounts;
     }
+
+        public List<TransactionDTO> generateTransaction(int num){
+            List<TransactionDTO> transactionDTOS= new ArrayList<>();
+            for (int i=0; i<num; i++){
+                int action = rand.nextInt(3)+1;
+                TransactionService transactionService = new TransactionServiceImpl();
+//                transactionService.selfTransaction()
+            }
+            return transactionDTOS;
+
+        }
 
 }
