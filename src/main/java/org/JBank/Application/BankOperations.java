@@ -4,22 +4,24 @@ public class BankOperations implements BankFunctions{
 
 
     @Override
-    public int balance() {
+    public int balance(long accNumber) {
         return 1;
     }
 
     @Override
-    public boolean withdraw(int amount) {
-        return true;
-    }
-
-    @Override
-    public boolean transfer() {
-        return true;
-    }
-
-    @Override
-    public int deposit() {
+    public int deposit(long accNumber, int amount) {
         return 1;
     }
+
+    @Override
+    public boolean withdraw(long accNumber, int amount) {
+        return true;
+    }
+
+    @Override
+    public boolean transfer(long accNumber, long destinAccNumber, int amount) {
+        return true;
+    }
+
+
 }

@@ -35,13 +35,25 @@ public class Bank {
 
         switch (transactionDTO.getTransactionActionId()) {
             case 1:
-                bankFunctions.deposit();
+                bankFunctions.deposit(
+                        transactionDTO.getBankAccount().getAccNumber(),
+                        transactionDTO.getAmount()
+                );
             case 2:
-                bankFunctions.withdraw(transactionDTO.getAmount());
+                bankFunctions.withdraw(
+                        transactionDTO.getBankAccount().getAccNumber(),
+                        transactionDTO.getAmount()
+                );
             case 3:
-                bankFunctions.transfer();
+                bankFunctions.transfer(
+                        transactionDTO.getBankAccount().getAccNumber(),
+                        transactionDTO.getDestinBankAccount().getAccNumber(),
+                        transactionDTO.getAmount()
+                );
             case 0:
-                bankFunctions.balance();
+                bankFunctions.balance(
+                        transactionDTO.getBankAccount().getAccNumber()
+                );
         }
         return true;
     }
