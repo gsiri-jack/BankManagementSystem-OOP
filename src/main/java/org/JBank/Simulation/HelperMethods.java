@@ -38,11 +38,9 @@ public class HelperMethods {
                 TransactionService transactionService = new TransactionServiceImpl();
                 TransactionDTO transactionDTO = new TransactionDTO();
                 if(action==1 || action == 2){
-                    System.out.println("self");
                   transactionDTO = transactionService.selfTransaction(getRandomBankAccount(bankAccounts), getRandomAmount(), action);
               } else {
-                    System.out.println("inter");
-                    transactionDTO = transactionService.interAccountTransaction(getTwoRandomBankAccount(bankAccounts).getFirst(), getTwoRandomBankAccount(bankAccounts).getLast(), getRandomAmount());
+                    transactionDTO = transactionService.interAccountTransaction(getTwoRandomBankAccount(bankAccounts).getFirst(), getTwoRandomBankAccount(bankAccounts).getLast(), getRandomAmount(), action);
                 }
                 transactionDTOS.add(transactionDTO);
             }

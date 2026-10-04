@@ -9,7 +9,7 @@ import java.security.SecureRandom;
 public class TransactionServiceImpl implements TransactionService{
 
     Map<Integer, String> action = new HashMap<>();
-    private SecureRandom random = new SecureRandom();
+    private final SecureRandom random = new SecureRandom();
     {
 
         action.put(1, "Deposit");
@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public TransactionDTO interAccountTransaction(BankAccount bankAccount, BankAccount destinBankAccount, int amount) {
+    public TransactionDTO interAccountTransaction(BankAccount bankAccount, BankAccount destinBankAccount, int amount, int actionId) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         String randomNum = Integer.toString(random.nextInt(200));
         String transactionId = "tid"+timestamp+Long.toString(bankAccount.getAccNumber())+"t"+Long.toString(destinBankAccount.getAccNumber())+"J"+randomNum;
@@ -50,8 +50,8 @@ public class TransactionServiceImpl implements TransactionService{
         transactionDTO.setBankAccount(bankAccount);
         transactionDTO.setAmount(amount);
         transactionDTO.setDestinBankAccount(destinBankAccount);
-        transactionDTO.setTransactionActionId(3);
-        transactionDTO.setTransactionAction(action.get(3));
+        transactionDTO.setTransactionActionId(actionId);
+        transactionDTO.setTransactionAction(action.get(actionId));
 
         return transactionDTO;
 
