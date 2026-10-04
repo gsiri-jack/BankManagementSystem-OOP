@@ -2,11 +2,11 @@ package org.JBank.Application;
 
 public class TransactionDTO {
 
-    private BankAccount bankAccount;
+    private long accountNumber;
     private String transactionId;
     private int transactionActionId;
     private String transactionAction;
-    private BankAccount destinBankAccount;
+    private long destinAccountNumber;
     private int amount;
 
     public int getTransactionActionId() {
@@ -33,21 +33,6 @@ public class TransactionDTO {
         this.transactionId = transactionId;
     }
 
-    public BankAccount getBankAccount() {
-        return bankAccount;
-    }
-
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
-    }
-
-    public BankAccount getDestinBankAccount() {
-        return destinBankAccount;
-    }
-
-    public void setDestinBankAccount(BankAccount destinBankAccount) {
-        this.destinBankAccount = destinBankAccount;
-    }
 
     public int getAmount() {
         return amount;
@@ -55,5 +40,21 @@ public class TransactionDTO {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public long getDestinAccountNumber() {
+        return destinAccountNumber;
+    }
+
+    public void setDestinAccountNumber(long destinAccountNumber) {
+        this.destinAccountNumber = destinAccountNumber;
+    }
+
+    public long getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(long accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

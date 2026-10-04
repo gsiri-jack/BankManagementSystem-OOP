@@ -48,17 +48,17 @@ public class HelperMethods {
 
         }
 
-        public BankAccount getRandomBankAccount(List<BankAccount> bankAccounts){
+        public long getRandomBankAccount(List<BankAccount> bankAccounts){
             int index = rand.nextInt(bankAccounts.size());
-            return bankAccounts.get(index);
+            return bankAccounts.get(index).getAccNumber();
         }
 
-        public List<BankAccount> getTwoRandomBankAccount(List<BankAccount> bankAccounts){
+        public List<Long> getTwoRandomBankAccount(List<BankAccount> bankAccounts){
             int num1 = ThreadLocalRandom.current().nextInt(0, bankAccounts.size());
             int num2 = ThreadLocalRandom.current().nextInt(0, bankAccounts.size());
-            List<BankAccount> responseBankAccounts = new ArrayList<>();
-            responseBankAccounts.add(bankAccounts.get(num1));
-            responseBankAccounts.add(bankAccounts.get(num2));
+            List<Long> responseBankAccounts = new ArrayList<>();
+            responseBankAccounts.add(bankAccounts.get(num1).getAccNumber());
+            responseBankAccounts.add(bankAccounts.get(num2).getAccNumber());
             return responseBankAccounts;
         }
 

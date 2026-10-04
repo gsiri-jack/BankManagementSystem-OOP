@@ -17,6 +17,7 @@ public class Bank {
 
     private long grandTotal;
     private List<BankAccount> bankAccountList = new ArrayList<>();
+    private final BankFunctions bankFunctions = new BankOperations();
 
 
     public void increaseGTotal(int amount){
@@ -25,37 +26,33 @@ public class Bank {
     public void decreaseGTotal(int amount){
         grandTotal-=amount;
     }
-    private final BankFunctions bankFunctions = new BankOperations();
 
     public long getGrandTotal() {
         return grandTotal;
     }
 
-    public boolean performTransaction(TransactionDTO transactionDTO){
+    public Object performTransaction(TransactionDTO transactionDTO){
+        BankAccount bankAccount = getBankAccountData(transactionDTO.getAccountNumber());
+        return switch (transactionDTO.getTransactionActionId()) {
+            case 1 -> bankFunctions.deposit(
+                    bankAccount,
+                    transactionDTO.getAmount()
+            );
+            case 2 -> bankFunctions.withdraw(
+                    bankAccount,
+                    transactionDTO.getAmount()
+            );
+            case 3 -> bankFunctions.transfer(
+                    bankAccount,
+                   getBankAccountData(transactionDTO.getDestinAccountNumber()),
+                    transactionDTO.getAmount()
+            );
+            case 0 -> bankFunctions.balance(
+                    bankAccount
+            );
+            default -> null;
+        };
 
-        switch (transactionDTO.getTransactionActionId()) {
-            case 1:
-                bankFunctions.deposit(
-                        transactionDTO.getBankAccount().getAccNumber(),
-                        transactionDTO.getAmount()
-                );
-            case 2:
-                bankFunctions.withdraw(
-                        transactionDTO.getBankAccount().getAccNumber(),
-                        transactionDTO.getAmount()
-                );
-            case 3:
-                bankFunctions.transfer(
-                        transactionDTO.getBankAccount().getAccNumber(),
-                        transactionDTO.getDestinBankAccount().getAccNumber(),
-                        transactionDTO.getAmount()
-                );
-            case 0:
-                bankFunctions.balance(
-                        transactionDTO.getBankAccount().getAccNumber()
-                );
-        }
-        return true;
     }
 
     public List<BankAccount> getBankAccountList() {
@@ -64,6 +61,18 @@ public class Bank {
 
     public void setBankAccountList(List<BankAccount> bankAccountList) {
         this.bankAccountList = bankAccountList;
+    }
+
+    public BankAccount getBankAccountData(long accountNumber){
+        int flag=0;
+        for(BankAccount acc : bankAccountList){
+            if(acc.getAccNumber()==accountNumber){
+                flag=1;
+                return acc;
+            }
+        }
+        return null;
+
     }
 }
 

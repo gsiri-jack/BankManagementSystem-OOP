@@ -17,13 +17,12 @@ public class TransactionServiceImpl implements TransactionService{
         action.put(3, "Transfer");
     }
     @Override
-    public TransactionDTO selfTransaction(BankAccount bankAccount, int amount, int actionId) {
+    public TransactionDTO selfTransaction(long accNumber, int amount, int actionId) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         String randomNum = Integer.toString(random.nextInt(200));
-        String transactionId = "tid"+timestamp+Long.toString(bankAccount.getAccNumber())+"J"+randomNum;
+        String transactionId = "tid"+timestamp+Long.toString(accNumber)+"J"+randomNum;
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setTransactionId(transactionId);
-        transactionDTO.setBankAccount(bankAccount);
         transactionDTO.setAmount(amount);
 
         transactionDTO.setTransactionActionId(actionId);
@@ -40,16 +39,16 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public TransactionDTO interAccountTransaction(BankAccount bankAccount, BankAccount destinBankAccount, int amount, int actionId) {
+    public TransactionDTO interAccountTransaction(long accNumber, long destinAccNumber, int amount, int actionId) {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         String randomNum = Integer.toString(random.nextInt(200));
-        String transactionId = "tid"+timestamp+Long.toString(bankAccount.getAccNumber())+"t"+Long.toString(destinBankAccount.getAccNumber())+"J"+randomNum;
+        String transactionId = "tid"+timestamp+Long.toString(accNumber)+"t"+Long.toString(destinAccNumber)+"J"+randomNum;
 
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setTransactionId(transactionId);
-        transactionDTO.setBankAccount(bankAccount);
+        transactionDTO.setAccountNumber(accNumber);
         transactionDTO.setAmount(amount);
-        transactionDTO.setDestinBankAccount(destinBankAccount);
+        transactionDTO.setDestinAccountNumber(destinAccNumber);
         transactionDTO.setTransactionActionId(actionId);
         transactionDTO.setTransactionAction(action.get(actionId));
 
