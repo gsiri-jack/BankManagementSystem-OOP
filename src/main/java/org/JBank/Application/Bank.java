@@ -19,6 +19,7 @@ public class Bank {
     private long grandTotal;
     private static List<BankAccount> bankAccountList = new ArrayList<>();
     private final BankFunctions bankFunctions = new BankOperations();
+    private TransactionService transactionService = new TransactionServiceImpl();
     private Scanner sc = new Scanner(System.in);
 
 
@@ -33,30 +34,31 @@ public class Bank {
         return grandTotal;
     }
 
-    public Object performTransaction(TransactionDTO transactionDTO){
+    public void performTransaction(TransactionDTO transactionDTO){
         BankAccount bankAccount = getBankAccountData(transactionDTO.getAccountNumber());
 //        System.out.println(bankAccount.getAccNumber()+"account nuym");
 
-        return switch (transactionDTO.getTransactionActionId()) {
+        switch (transactionDTO.getTransactionActionId()) {
             case 1 -> bankFunctions.deposit(
                     bankAccount,
                     transactionDTO.getAmount()
             );
-            case 2 ->  bankFunctions.withdraw(
+            case 2 -> bankFunctions.withdraw(
 
                     bankAccount,
                     transactionDTO.getAmount()
             );
             case 3 -> bankFunctions.transfer(
                     bankAccount,
-                   getBankAccountData(transactionDTO.getDestinAccountNumber()),
+                    getBankAccountData(transactionDTO.getDestinAccountNumber()),
                     transactionDTO.getAmount()
             );
             case 0 -> bankFunctions.balance(
                     bankAccount
             );
-            default -> null;
-        };
+            default -> {
+            }
+        }
 
     }
 
@@ -65,9 +67,9 @@ public class Bank {
     }
 
     public void setBankAccountList(List<BankAccount> bankAccountList) {
-//        System.out.println("bank accountlist setup: "+bankAccountList.size());
-        this.bankAccountList = bankAccountList;
-//        System.out.println("bank accountlist setup after: "+this.bankAccountList.size());
+//        System.out.println("bank accountList setup: "+bankAccountList.size());
+        Bank.bankAccountList = bankAccountList;
+//        System.out.println("bank accountList setup after: "+this.bankAccountList.size());
 
     }
 
@@ -76,7 +78,7 @@ public class Bank {
 //        System.out.println("bank details fetcher");
 //        System.out.println(bankAccountList.size()+"size");
         for(BankAccount acc : bankAccountList){
-//            System.out.println("gettimg bank details: "+acc.getAccNumber()+" "+accountNumber);
+//            System.out.println("getting bank details: "+acc.getAccNumber()+" "+accountNumber);
             if(acc.getAccNumber()==accountNumber){
                 flag=1;
 //                System.out.println("bank account found"+ acc.getAccNumber());
@@ -115,24 +117,38 @@ public class Bank {
         showBankMenuUI();
         System.out.print("Enter Your option : ");
         int userOption = sc.nextInt();
-        System.out.println();
-        System.out.print("Please Enter Your Account Number : ");
-        Long accNumber = sc.nextLong();
-        if(checkBankAccountExist(accNumber)){
+        if(actionsMenu.containsKey(userOption)){
             System.out.println();
             System.out.print("Please Enter Your Account Number : ");
-            int amount = sc.nextInt();
-            startTransaction(userOption, accNumber, amount);
+            Long accNumber = sc.nextLong();
+            if(checkBankAccountExist(accNumber)){
+                System.out.println();
+                System.out.print("Please Enter Your Account Number : ");
+                int amount = sc.nextInt();
+               if(userOption<3){
+                   startTransaction(userOption, accNumber, amount);
+               } else if (userOption==3) {
+                   System.out.println();
+                   System.out.print("Please Enter Receivers Account Number : ");
+                   Long destinAccount = sc.nextLong();
+                   startInterAccountTransaction(accNumber, destinAccount, amount, userOption);
+
+               }
+            }else {
+                System.out.println("* ! Please Check You have entered ! *");
+            }
         }else {
-            System.out.println("* ! Please Check You have entered ! *");
+            System.out.println("Please select correct Option");
         }
 
     }
 
-    private void startTransaction(int userOption, Long accNumber, int amount) {
-        if(userOption==1 || userOption==2){
+    private void startInterAccountTransaction(Long accNumber, Long destinAccount, int amount, int userOption) {
+        transactionService.interAccountTransaction(accNumber,destinAccount, amount, userOption);
+    }
 
-        }
+    private void startTransaction(int userOption, Long accNumber, int amount) {
+        transactionService.selfTransaction(accNumber, amount, userOption);
     }
 }
 
