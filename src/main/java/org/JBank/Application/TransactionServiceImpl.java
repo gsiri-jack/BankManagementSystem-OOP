@@ -9,6 +9,7 @@ import java.security.SecureRandom;
 public class TransactionServiceImpl implements TransactionService{
 
     Map<Integer, String> action = new HashMap<>();
+    private Bank bank = new Bank();
     private final SecureRandom random = new SecureRandom();
     {
 
@@ -18,21 +19,27 @@ public class TransactionServiceImpl implements TransactionService{
     }
     @Override
     public TransactionDTO selfTransaction(long accNumber, int amount, int actionId) {
+//        System.out.println("selfTrasactions");
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         String randomNum = Integer.toString(random.nextInt(200));
         String transactionId = "tid"+timestamp+Long.toString(accNumber)+"J"+randomNum;
+//        System.out.println("trasactionId: "+transactionId);
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setTransactionId(transactionId);
         transactionDTO.setAmount(amount);
-
         transactionDTO.setTransactionActionId(actionId);
+        transactionDTO.setAccountNumber(accNumber);
         String op;
         try {
             op = action.get(actionId);
+            transactionDTO.setTransactionAction(op);
+//            System.out.println("action: "+op);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+//        System.out.println("trasactionDetails: "+transactionDTO.getAccountNumber()+"-"+transactionDTO.getTransactionAction());
+        bank.performTransaction(transactionDTO);
         transactionDTO.setTransactionAction(op);
 
         return transactionDTO;

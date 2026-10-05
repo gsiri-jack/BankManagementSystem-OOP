@@ -31,22 +31,29 @@ public class BankOperations implements BankFunctions{
 
     @Override
     public Map<Boolean, String> withdraw(BankAccount bankAccount, int amount) {
+
         Map<Boolean, String> res= new HashMap<>();
         try {
-            boolean status = bankAccount.deposit_amount(amount);
+            boolean status = bankAccount.withdraw_amount(amount);
+
             if(status){
                 res.put(true, "Successful");
             }else{
                 res.put(false, "Failed");
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println(e+"some error while try block of withdraw");
         }
+
         return res;
     }
 
     @Override
-    public Map<Boolean, String> transfer(BankAccount bankAccount, BankAccount destinBankAccount, int amount) {
+    public Map<Boolean, String> transfer(
+            BankAccount bankAccount,
+            BankAccount destinBankAccount,
+            int amount
+    ) {
         Map<Boolean, String> res= new HashMap<>();
         return res;
     }

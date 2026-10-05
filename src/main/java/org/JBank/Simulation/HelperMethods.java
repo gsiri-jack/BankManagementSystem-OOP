@@ -19,8 +19,7 @@ public class HelperMethods {
             int amount = rand.nextInt(501)+1000;
             try{
                 BankAccount bankAccount = new BankAccount(acc_number, amount, bank);
-//                System.out.println(bankAccount.getAmount()+" - " +bankAccount.getAccNumber() + " - " + bankAccount.getBank().getGrandTotal());
-
+                System.out.println(acc_number+"--"+amount);
                 accounts.add(bankAccount);
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -33,14 +32,23 @@ public class HelperMethods {
         public List<TransactionDTO> generateTransaction(int num, List<BankAccount> bankAccounts){
             List<TransactionDTO> transactionDTOS= new ArrayList<>();
             for (int i=0; i<num; i++){
-                System.out.println(i);
-                int action = rand.nextInt(3)+1;
+                System.out.println("creating Transaction-"+i);
+                int action = rand.nextInt(2)+1;
                 TransactionService transactionService = new TransactionServiceImpl();
                 TransactionDTO transactionDTO = new TransactionDTO();
                 if(action==1 || action == 2){
-                  transactionDTO = transactionService.selfTransaction(getRandomBankAccount(bankAccounts), getRandomAmount(), action);
+                  transactionDTO = transactionService.selfTransaction(
+                          getRandomBankAccount(bankAccounts),
+                          getRandomAmount(),
+                          action
+                  );
               } else {
-                    transactionDTO = transactionService.interAccountTransaction(getTwoRandomBankAccount(bankAccounts).getFirst(), getTwoRandomBankAccount(bankAccounts).getLast(), getRandomAmount(), action);
+                    transactionDTO = transactionService.interAccountTransaction(
+                            getTwoRandomBankAccount(bankAccounts).getFirst(),
+                            getTwoRandomBankAccount(bankAccounts).getLast(),
+                            getRandomAmount(),
+                            action
+                    );
                 }
                 transactionDTOS.add(transactionDTO);
             }

@@ -43,10 +43,13 @@ public class BankAccount {
     }
 
     public boolean withdraw_amount(int amount){
+        // have to implement the exception Handling for the amount check
+
         if(amount<0) {
             return false;
         }else {
             this.amount-=amount;
+            System.out.println("amount withdraw : "+amount);
             return true;
         }
     }
