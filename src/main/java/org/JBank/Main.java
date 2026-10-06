@@ -19,6 +19,8 @@ public class Main {
             System.out.println(acc.getAccNumber()+" "+ acc.getAmount());
         }
         bank.setBankAccountList(bankAccounts);
+        bank.getBankAccountData(190005);
+
 
         bank.StartApplication();
 

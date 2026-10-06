@@ -36,8 +36,7 @@ public class Bank {
 
     public void performTransaction(TransactionDTO transactionDTO){
         BankAccount bankAccount = getBankAccountData(transactionDTO.getAccountNumber());
-//        System.out.println(bankAccount.getAccNumber()+"account nuym");
-        System.out.println("Perfoming transaction : "+transactionDTO.getTransactionActionId());
+        System.out.println("Performing transaction : "+transactionDTO.getTransactionActionId());
         switch (transactionDTO.getTransactionActionId()) {
             case 1 -> bankFunctions.deposit(
                     bankAccount,
@@ -67,21 +66,22 @@ public class Bank {
     }
 
     public void setBankAccountList(List<BankAccount> bankAccountList) {
-//        System.out.println("bank accountList setup: "+bankAccountList.size());
         Bank.bankAccountList = bankAccountList;
-//        System.out.println("bank accountList setup after: "+this.bankAccountList.size());
 
     }
 
+    private void startInterAccountTransaction(Long accNumber, Long destinAccount, int amount, int userOption) {
+        transactionService.interAccountTransaction(accNumber,destinAccount, amount, userOption);
+    }
+
+    private void startTransaction(int userOption, Long accNumber, int amount) {
+        System.out.println("called out for Transaction");
+        transactionService.selfTransaction(accNumber, amount, userOption);
+    }
+
     public BankAccount getBankAccountData(long accountNumber){
-        int flag=0;
-//        System.out.println("bank details fetcher");
-//        System.out.println(bankAccountList.size()+"size");
         for(BankAccount acc : bankAccountList){
-//            System.out.println("getting bank details: "+acc.getAccNumber()+" "+accountNumber);
             if(acc.getAccNumber()==accountNumber){
-                flag=1;
-//                System.out.println("bank account found"+ acc.getAccNumber());
                 return acc;
             }
         }
@@ -89,6 +89,30 @@ public class Bank {
 
     }
 
+
+
+
+    public boolean checkBankAccountExist(Long accNumber){
+        try{
+            return getBankAccountData(accNumber) != null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void StartApplication(){
+
+        int userOption;
+        while(true){
+            showBankMenuUI();
+            System.out.print("Enter Your option : ");
+            userOption= sc.nextInt();
+            if(userOption==9){
+                return;
+            }
+            Application(userOption);
+        }
+    }
 
     public void showBankMenuUI(){
 
@@ -141,38 +165,7 @@ public class Bank {
     }
 
 
-    public boolean checkBankAccountExist(Long accNumber){
-        try{
-            return getBankAccountData(accNumber) != null;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    public void StartApplication(){
-
-        int userOption;
-        while(true){
-            showBankMenuUI();
-            System.out.print("Enter Your option : ");
-            userOption= sc.nextInt();
-            if(userOption==9){
-                return;
-            }
-            Application(userOption);
-        }
-
-
-    }
-
-    private void startInterAccountTransaction(Long accNumber, Long destinAccount, int amount, int userOption) {
-        transactionService.interAccountTransaction(accNumber,destinAccount, amount, userOption);
-    }
-
-    private void startTransaction(int userOption, Long accNumber, int amount) {
-        System.out.println("called out for Transaction");
-        transactionService.selfTransaction(accNumber, amount, userOption);
-    }
 }
 
 

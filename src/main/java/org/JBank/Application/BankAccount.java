@@ -1,6 +1,8 @@
 package org.JBank.Application;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class BankAccount {
 
@@ -37,17 +39,30 @@ public class BankAccount {
 
 
 
-    public boolean deposit_amount(int amount){
-        System.out.println("Depositing Amount "+this.amount);
-        this.amount+=amount;
-        System.out.println("after Depositing Amount "+this.amount);
-        return true;
+    public List<Object> deposit_amount(int amount){
+        List<Object> response = new ArrayList<>();
+        response.add(0, "Deposit");
+
+        try {
+            int initialAmount = this.amount;
+            this.amount+=amount;
+            int finalAmount = this.amount;
+            response.add(1,true);
+            response.add(2, initialAmount);
+            response.add(3, finalAmount);
+        } catch (Exception e) {
+            response.add(1,false);
+            response.add(2, e);
+        }
+
+        return response;
     }
 
     public boolean withdraw_amount(int amount){
         // have to implement the exception Handling for the amount check
-
-        if(amount<0) {
+        List<Object> response = new ArrayList<>();
+        response.add(0, "Deposit");
+        if(this.amount<=0 || amount>this.amount) {
             return false;
         }else {
             this.amount-=amount;
