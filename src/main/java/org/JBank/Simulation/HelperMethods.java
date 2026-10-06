@@ -34,7 +34,7 @@ public class HelperMethods {
             for (int i=0; i<num; i++){
                 System.out.println("creating Transaction-"+i);
                 int action = rand.nextInt(2)+1;
-                TransactionService transactionService = new TransactionServiceImpl();
+                TransactionService transactionService = new TransactionServiceImpl(bankAccounts.getFirst().getBank());
                 TransactionDTO transactionDTO = new TransactionDTO();
                 if(action==1 || action == 2){
                   transactionDTO = transactionService.selfTransaction(

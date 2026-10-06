@@ -4,8 +4,8 @@ package org.JBank.Application;
 
 public class BankAccount {
 
-    private Bank bank;
-    private  long accNumber;
+    private final Bank bank;
+    private final long accNumber;
     private int amount;
 
 
@@ -38,7 +38,9 @@ public class BankAccount {
 
 
     public boolean deposit_amount(int amount){
+        System.out.println("Depositing Amount "+this.amount);
         this.amount+=amount;
+        System.out.println("after Depositing Amount "+this.amount);
         return true;
     }
 

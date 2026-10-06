@@ -11,11 +11,18 @@ public class Main {
     public static void main(String[] args) {
 
         Bank bank = new Bank();
-        bank.showBankMenuUI();
 
-//        HelperMethods helperMethods = new HelperMethods();
-//        List<BankAccount> bankAccounts =  helperMethods.accountGenerator(5, bank);
-//        bank.setBankAccountList(bankAccounts);
+
+        HelperMethods helperMethods = new HelperMethods();
+        List<BankAccount> bankAccounts =  helperMethods.accountGenerator(5, bank);
+        for(BankAccount acc : bankAccounts){
+            System.out.println(acc.getAccNumber()+" "+ acc.getAmount());
+        }
+        bank.setBankAccountList(bankAccounts);
+
+        bank.StartApplication();
+
+
 //        List<TransactionDTO> transactionDTOS = helperMethods.generateTransaction(2, bankAccounts);
 
 
