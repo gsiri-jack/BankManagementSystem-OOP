@@ -8,19 +8,16 @@ import java.util.Scanner;
 
 public class Bank {
 
-    //actions of Bank
-    Map<Integer, String> userActionsMenu =Map.of(
-            0, "balance" ,
-            1, "deposit",
-            2, "withdraw",
-            3, "transfer"
-    );
+
 
     private long grandTotal;
     private static List<BankAccount> bankAccountList = new ArrayList<>();
+
     private final BankFunctions bankFunctions = new BankOperations();
-    private TransactionService transactionService = new TransactionServiceImpl(this);
-    private Scanner sc = new Scanner(System.in);
+    private final TransactionService transactionService = new TransactionServiceImpl(this);
+
+    public ApplicationTools applicationTools= new ApplicationTools();
+
 
 
     public void increaseGTotal(int amount){
@@ -36,6 +33,7 @@ public class Bank {
 
     public void performTransaction(TransactionDTO transactionDTO){
         BankAccount bankAccount = getBankAccountData(transactionDTO.getAccountNumber());
+
         System.out.println("Performing transaction : "+transactionDTO.getTransactionActionId());
         switch (transactionDTO.getTransactionActionId()) {
             case 1 -> bankFunctions.deposit(
@@ -70,11 +68,11 @@ public class Bank {
 
     }
 
-    private void startInterAccountTransaction(Long accNumber, Long destinAccount, int amount, int userOption) {
+    void startInterAccountTransaction(Long accNumber, Long destinAccount, int amount, int userOption) {
         transactionService.interAccountTransaction(accNumber,destinAccount, amount, userOption);
     }
 
-    private void startTransaction(int userOption, Long accNumber, int amount) {
+    void startTransaction(int userOption, Long accNumber, int amount) {
         System.out.println("called out for Transaction");
         transactionService.selfTransaction(accNumber, amount, userOption);
     }
@@ -86,11 +84,7 @@ public class Bank {
             }
         }
         return null;
-
     }
-
-
-
 
     public boolean checkBankAccountExist(Long accNumber){
         try{
@@ -99,6 +93,28 @@ public class Bank {
             throw new RuntimeException(e);
         }
     }
+
+    public void startApplication(){
+        applicationTools.StartApplication();
+    }
+
+
+}
+
+class ApplicationTools  {
+    //actions of Bank
+
+    Map<Integer, String> userActionsMenu =Map.of(
+            0, "balance" ,
+            1, "deposit",
+            2, "withdraw",
+            3, "transfer"
+    );
+
+    private final Scanner sc = new Scanner(System.in);
+
+    private final BankFunctions bankFunctions = new BankOperations();
+    private final Bank bank = new Bank();
 
     public void StartApplication(){
 
@@ -135,16 +151,16 @@ public class Bank {
             System.out.println();
             System.out.print("Please Enter Your Account Number : ");
             Long accNumber = sc.nextLong();
-            if(checkBankAccountExist(accNumber)){
+            if((bank.checkBankAccountExist(accNumber))){
 
                 if(userOption<3){
                     if(userOption==0){
-                        System.out.println(bankFunctions.balance(getBankAccountData(accNumber)));
+                        System.out.println(bankFunctions.balance(bank.getBankAccountData(accNumber)));
                     }else{
                         System.out.println();
                         System.out.print("Please Enter amount : ");
                         int amount = sc.nextInt();
-                        startTransaction(userOption, accNumber, amount);
+                        bank.startTransaction(userOption, accNumber, amount);
                     }
                 } else if (userOption==3) {
                     System.out.println();
@@ -153,7 +169,7 @@ public class Bank {
                     System.out.println();
                     System.out.print("Please Enter Receivers Account Number : ");
                     Long destinAccount = sc.nextLong();
-                    startInterAccountTransaction(accNumber, destinAccount, amount, userOption);
+                    bank.startInterAccountTransaction(accNumber, destinAccount, amount, userOption);
 
                 }
             }else {
@@ -163,9 +179,5 @@ public class Bank {
             System.out.println("Please select correct Option");
         }
     }
-
-
-
 }
-
 
