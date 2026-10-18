@@ -16,7 +16,6 @@ public class ApplicationTools {
 
     private final Scanner sc = new Scanner(System.in);
 
-    private final BankFunctions bankFunctions = new BankOperations();
     private final Bank bank;
     public ApplicationTools(Bank bank) {
         this.bank=bank;
@@ -73,7 +72,7 @@ public class ApplicationTools {
 
                 if(userOption<3){
                     if(userOption==0){
-                        System.out.println(bankFunctions.balance(bank.getBankAccountData(accNumber)));
+                        System.out.println("Under Construction");
                     }else{
                         System.out.println();
                         System.out.print("Please Enter amount : ");

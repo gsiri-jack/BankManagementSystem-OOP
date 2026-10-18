@@ -5,9 +5,15 @@ import java.util.Map;
 
 public interface BankFunctions {
 
-    public int balance(BankAccount bankAccount);
-    public List<Object> deposit(BankAccount bankAccount, int amount);
-    public Map<Boolean, String> withdraw(BankAccount bankAccount, int amount);
-    public Map<Boolean, String> transfer(BankAccount bankAccount, BankAccount destinBankAccount, int amount);
+    int balance(BankAccount bankAccount);
+    List<Object> deposit(BankAccount bankAccount, int amount);
+    Map<Boolean, String> withdraw(BankAccount bankAccount, int amount);
+    Map<Boolean, String> transfer(BankAccount bankAccount, BankAccount destinBankAccount, int amount);
+
+    int balance(Long accountNumber);
+    List<Object> deposit(Long accountNumber, int amount);
+    Map<Boolean, String> withdraw(Long accountNumber, int amount);
+    Map<Boolean, String> transfer(Long accountNumber, Long destinAccountNumber, int amount);
+
 
 }

@@ -3,18 +3,15 @@ package org.JBank.Application;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class Bank {
 
 
 
     private long grandTotal;
-    private static List<BankAccount> bankAccountList = new ArrayList<>();
+    private List<BankAccount> bankAccountList = new ArrayList<>();
 
-    private final BankFunctions bankFunctions = new BankOperations();
+    private final BankFunctions bankFunctions = new BankOperations(this);
     private final TransactionService transactionService = new TransactionServiceImpl(this);
 
     public ApplicationTools applicationTools= new ApplicationTools(this);
@@ -65,7 +62,7 @@ public class Bank {
     }
 
     public void setBankAccountList(List<BankAccount> bankAccountList) {
-        Bank.bankAccountList = bankAccountList;
+        this.bankAccountList = bankAccountList;
 
     }
 

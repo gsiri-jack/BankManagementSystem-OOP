@@ -8,12 +8,12 @@ public class BankAccount {
 
     private final Bank bank;
     private final long accNumber;
-    private int amount;
+    private int balance;
 
 
     public BankAccount(long accNumber, Bank bank){
         this.accNumber=accNumber;
-        this.amount=0;
+        this.balance =0;
         this.bank=bank;
 
 
@@ -21,7 +21,7 @@ public class BankAccount {
 
     public BankAccount(long accNumber, int amount, Bank bank){
         this.accNumber=accNumber;
-        this.amount=amount;
+        this.balance =amount;
         this.bank=bank;
         this.bank.increaseGTotal(amount);
 
@@ -33,8 +33,9 @@ public class BankAccount {
     }
 
 
-    public int getAmount(){
-        return amount;
+
+    public int getBalance(){
+        return balance;
     }
 
 
@@ -44,9 +45,9 @@ public class BankAccount {
         response.add(0, "Deposit");
 
         try {
-            int initialAmount = this.amount;
-            this.amount+=amount;
-            int finalAmount = this.amount;
+            int initialAmount = this.balance;
+            this.balance +=amount;
+            int finalAmount = this.balance;
             response.add(1,true);
             response.add(2, initialAmount);
             response.add(3, finalAmount);
@@ -59,14 +60,14 @@ public class BankAccount {
     }
 
     public boolean withdraw_amount(int amount){
-        // have to implement the exception Handling for the amount check
+        // have to implement the exception Handling for the balance check
         List<Object> response = new ArrayList<>();
         response.add(0, "Deposit");
-        if(this.amount<=0 || amount>this.amount) {
+        if(this.balance <=0 || amount>this.balance) {
             return false;
         }else {
-            this.amount-=amount;
-            System.out.println("amount withdraw : "+amount);
+            this.balance -=amount;
+            System.out.println("balance withdraw : "+amount);
             return true;
         }
     }

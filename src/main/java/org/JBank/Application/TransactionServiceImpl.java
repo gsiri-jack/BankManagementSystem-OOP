@@ -7,7 +7,7 @@ import java.util.Map;
 import java.security.SecureRandom;
 
 public class TransactionServiceImpl implements TransactionService{
-    private Bank bank ;
+    private final Bank bank ;
     public TransactionServiceImpl(Bank bank){
         this.bank=bank;
     }
@@ -23,11 +23,11 @@ public class TransactionServiceImpl implements TransactionService{
     }
     @Override
     public TransactionDTO selfTransaction(long accNumber, int amount, int actionId) {
-        System.out.println("selfTrasactions");
+        System.out.println("selfTransactions");
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
         String randomNum = Integer.toString(random.nextInt(200));
         String transactionId = "tid"+timestamp+Long.toString(accNumber)+"J"+randomNum;
-        System.out.println("trasactionId: "+transactionId);
+        System.out.println("transactionId: "+transactionId);
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setTransactionId(transactionId);
         transactionDTO.setAmount(amount);
@@ -42,7 +42,7 @@ public class TransactionServiceImpl implements TransactionService{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        System.out.println("trasactionDetails: "+transactionDTO.getAccountNumber()+"-"+transactionDTO.getTransactionAction());
+//        System.out.println("transactionDetails: "+transactionDTO.getAccountNumber()+"-"+transactionDTO.getTransactionAction());
         bank.performTransaction(transactionDTO);
         transactionDTO.setTransactionAction(op);
 
