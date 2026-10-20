@@ -38,7 +38,7 @@ public class Bank {
             case 2 -> bankFunctions.withdraw(transactionDTO);
             case 3 -> bankFunctions.transfer(transactionDTO);
             case 0 -> bankFunctions.balance(
-                    bankAccount
+                    transactionDTO.getAccountNumber()
             );
             default -> {
             }
