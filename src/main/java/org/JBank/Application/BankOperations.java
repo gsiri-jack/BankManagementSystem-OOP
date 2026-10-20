@@ -1,13 +1,10 @@
 package org.JBank.Application;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class BankOperations implements BankFunctions{
 
-    private Tools tools = new Tools();
+    private final Tools tools = new Tools();
     private final Bank bank;
 
     public BankOperations(Bank bank) {
@@ -15,56 +12,56 @@ public class BankOperations implements BankFunctions{
     }
 
     private BankAccount fetchAccount(Long accountNumber){
-        for(BankAccount acc : bank.getBankAccountList()){
-            if(acc.getAccNumber() == accountNumber){
-                return acc;
+
+            for(BankAccount acc : bank.getBankAccountList()) {
+                if (acc.getAccNumber() == accountNumber) {
+                    return acc;
+                }
             }
-        }
-        return null;
+        throw new RuntimeException("Account not found");
     }
 
-    @Override
-    public int balance(BankAccount bankAccount) {
-        return bankAccount.getBalance();
-    }
-
-    @Override
-    public List<Object> deposit(BankAccount bankAccount, int amount) {
-        List<Object> res = bankAccount.deposit_amount(amount);
-        tools.display_message(res);
-        return res;
-
-    }
-
-    @Override
-    public Map<Boolean, String> withdraw(BankAccount bankAccount, int amount) {
-
-        Map<Boolean, String> res= new HashMap<>();
-        boolean status = bankAccount.withdraw_amount(amount);
-
-        try {
-
-            if(status){
-                res.put(true, "Successful");
-            }else{
-                res.put(false, "Failed");
-            }
-        } catch (Exception e) {
-            System.out.println(e+"some error while try block of withdraw");
-        }
-
-        return res;
-    }
-
-    @Override
-    public Map<Boolean, String> transfer(
-            BankAccount bankAccount,
-            BankAccount destinBankAccount,
-            int amount
-    ) {
-        Map<Boolean, String> res= new HashMap<>();
-        return res;
-    }
+//    @Override
+//    public int balance(BankAccount bankAccount) {
+//        return bankAccount.getBalance();
+//    }
+//
+//    @Override
+//    public List<Object> deposit(BankAccount bankAccount, int amount) {
+//        List<Object> res = bankAccount.deposit_amount(amount);
+//        tools.display_message(res);
+//        return res;
+//
+//    }
+//
+//    @Override
+//    public Map<Boolean, String> withdraw(BankAccount bankAccount, int amount) {
+//
+//        Map<Boolean, String> res= new HashMap<>();
+//        boolean status = bankAccount.withdraw_amount(amount);
+//
+//        try {
+//
+//            if(status){
+//                res.put(true, "Successful");
+//            }else{
+//                res.put(false, "Failed");
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e+"some error while try block of withdraw");
+//        }
+//
+//        return res;
+//    }
+//
+//    @Override
+//    public Map<Boolean, String> transfer(
+//            BankAccount bankAccount,
+//            BankAccount destinBankAccount,
+//            int amount
+//    ) {
+//        return new HashMap<>();
+//    }
 // New update .
 
     @Override
@@ -82,29 +79,53 @@ public class BankOperations implements BankFunctions{
     }
 
     @Override
-    public List<Object> deposit(Long accountNumber, int amount) {
+    public List<Object> deposit(TransactionDTO transactionDTO) {
+        List<Object> response = new ArrayList<>();
+        response.add("deposit");
         try{
 
-            int balance = Objects.requireNonNull(fetchAccount(accountNumber)).getBalance();
-            balance = balance+amount;
-            return
+            fetchAccount(transactionDTO.getAccountNumber());
+            int balance = fetchAccount(transactionDTO.getAccountNumber()).getBalance();
+            fetchAccount(transactionDTO.getAccountNumber()).setBalance(balance+transactionDTO.getAmount());
+            response.add(true);
+            response.add(balance);
+            response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
+            tools.display_message(response);
+            return response;
+
+        }catch (NullPointerException e){
+            response.add(false);
+            response.add("Unable To fetch account : Error 89xhvdjb");
+            tools.display_message(response);
+            return response;
+
+        }
+
+    }
+
+    @Override
+    public List<Object> withdraw(TransactionDTO transactionDTO) {
+        List<Object> response = new ArrayList<>();
+        response.add("Withdraw");
+        try{
+
+            int balance = Objects.requireNonNull(fetchAccount(transactionDTO.getAccountNumber())).getBalance();
+            balance = balance-transactionDTO.getAmount();
+            response.add(true);
+            response.add(balance);
+            response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
+            return response;
 
         }catch (NullPointerException e){
             System.out.println("Unable To fetch account : Error 89xhvdjb");
             return null;
         }
-        return List.of();
 
     }
 
     @Override
-    public Map<Boolean, String> withdraw(Long accountNumber, int amount) {
-        return Map.of();
-    }
-
-    @Override
-    public Map<Boolean, String> transfer(Long accountNumber, Long destinAccountNumber, int amount) {
-        return Map.of();
+    public List<Object> transfer(TransactionDTO transactionDTO) {
+        return null;
     }
 
 

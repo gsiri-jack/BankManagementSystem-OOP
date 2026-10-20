@@ -38,6 +38,10 @@ public class BankAccount {
         return balance;
     }
 
+    public void setBalance(int newBalance){
+        this.balance=newBalance;
+    }
+
 
 
     public List<Object> deposit_amount(int amount){

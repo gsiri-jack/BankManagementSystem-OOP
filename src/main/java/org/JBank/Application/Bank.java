@@ -34,20 +34,9 @@ public class Bank {
 
         System.out.println("Performing transaction : "+transactionDTO.getTransactionActionId());
         switch (transactionDTO.getTransactionActionId()) {
-            case 1 -> bankFunctions.deposit(
-                    bankAccount,
-                    transactionDTO.getAmount()
-            );
-            case 2 -> bankFunctions.withdraw(
-
-                    bankAccount,
-                    transactionDTO.getAmount()
-            );
-            case 3 -> bankFunctions.transfer(
-                    bankAccount,
-                    getBankAccountData(transactionDTO.getDestinAccountNumber()),
-                    transactionDTO.getAmount()
-            );
+            case 1 -> bankFunctions.deposit(transactionDTO);
+            case 2 -> bankFunctions.withdraw(transactionDTO);
+            case 3 -> bankFunctions.transfer(transactionDTO);
             case 0 -> bankFunctions.balance(
                     bankAccount
             );
