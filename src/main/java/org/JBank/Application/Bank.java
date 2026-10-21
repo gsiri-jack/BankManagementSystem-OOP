@@ -30,20 +30,21 @@ public class Bank {
     }
 
     public void performTransaction(TransactionDTO transactionDTO){
-        BankAccount bankAccount = getBankAccountData(transactionDTO.getAccountNumber());
 
         System.out.println("Performing transaction : "+transactionDTO.getTransactionActionId());
         switch (transactionDTO.getTransactionActionId()) {
             case 1 -> bankFunctions.deposit(transactionDTO);
             case 2 -> bankFunctions.withdraw(transactionDTO);
             case 3 -> bankFunctions.transfer(transactionDTO);
-            case 0 -> bankFunctions.balance(
-                    transactionDTO.getAccountNumber()
-            );
             default -> {
             }
         }
 
+    }
+    public void performTransaction(BalanceTransactionDto balanceTransactionDto){
+        bankFunctions.balance(
+                balanceTransactionDto.getAccountNumber()
+        );
     }
 
     public List<BankAccount> getBankAccountList() {
@@ -62,6 +63,9 @@ public class Bank {
     void startTransaction(int userOption, Long accNumber, int amount) {
         System.out.println("called out for Transaction");
         transactionService.selfTransaction(accNumber, amount, userOption);
+    }
+    void balanceTransaction(int userOption, Long accNumber){
+        transactionService.checkBalanceAction(accNumber);
     }
 
     public BankAccount getBankAccountData(long accountNumber){

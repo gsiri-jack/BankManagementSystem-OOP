@@ -66,4 +66,18 @@ public class TransactionServiceImpl implements TransactionService{
         return transactionDTO;
 
     }
+
+    @Override
+    public void checkBalanceAction(Long accNumber) {
+        BalanceTransactionDto balanceTransactionDto = new BalanceTransactionDto();
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+        String randomNum = Integer.toString(random.nextInt(100)+300);
+        String balanceId = "tid"+timestamp+"B"+Long.toString(accNumber)+"J"+randomNum;
+
+        balanceTransactionDto.setBalanceId(balanceId);
+        balanceTransactionDto.setAccountNumber(accNumber);
+        bank.performTransaction(balanceTransactionDto);
+
+
+    }
 }

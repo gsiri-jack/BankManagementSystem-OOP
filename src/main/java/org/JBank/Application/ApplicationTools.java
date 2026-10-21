@@ -72,7 +72,7 @@ public class ApplicationTools {
 
                 if(userOption<3){
                     if(userOption==0){
-                        System.out.println("Under Construction");
+                        bank.balanceTransaction(userOption, accNumber);
                     }else{
                         System.out.println();
                         System.out.print("Please Enter amount : ");
