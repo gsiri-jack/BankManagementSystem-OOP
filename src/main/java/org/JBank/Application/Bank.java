@@ -3,6 +3,7 @@ package org.JBank.Application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Bank {
 
@@ -57,6 +58,10 @@ public class Bank {
     }
 
     void startInterAccountTransaction(Long accNumber, Long destinAccount, int amount, int userOption) {
+        if(Objects.equals(accNumber, destinAccount)){
+            System.out.println("Cannot Transfer to your own account");
+            return;
+        }
         transactionService.interAccountTransaction(accNumber,destinAccount, amount, userOption);
     }
 

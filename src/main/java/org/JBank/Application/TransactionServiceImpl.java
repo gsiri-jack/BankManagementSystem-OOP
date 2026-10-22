@@ -62,7 +62,7 @@ public class TransactionServiceImpl implements TransactionService{
         transactionDTO.setDestinAccountNumber(destinAccNumber);
         transactionDTO.setTransactionActionId(actionId);
         transactionDTO.setTransactionAction(action.get(actionId));
-
+        bank.performTransaction(transactionDTO);
         return transactionDTO;
 
     }

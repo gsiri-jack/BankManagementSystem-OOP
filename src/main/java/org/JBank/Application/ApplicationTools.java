@@ -85,8 +85,13 @@ public class ApplicationTools {
                     int amount = sc.nextInt();
                     System.out.println();
                     System.out.print("Please Enter Receivers Account Number : ");
+
                     Long destinAccount = sc.nextLong();
-                    bank.startInterAccountTransaction(accNumber, destinAccount, amount, userOption);
+                    if((bank.checkBankAccountExist(destinAccount))){
+                        bank.startInterAccountTransaction(accNumber, destinAccount, amount, userOption);
+                    }else{
+                        System.out.println("Please check the Receiver Account Number !!!!");
+                    }
 
                 }
             }else {
