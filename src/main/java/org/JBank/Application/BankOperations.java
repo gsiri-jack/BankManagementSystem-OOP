@@ -44,15 +44,25 @@ public class BankOperations implements BankFunctions{
             fetchAccount(transactionDTO.getAccountNumber());
             int balance = fetchAccount(transactionDTO.getAccountNumber()).getBalance();
             fetchAccount(transactionDTO.getAccountNumber()).setBalance(balance+transactionDTO.getAmount());
-            response.add(true);
-            response.add(balance);
-            response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
+
+            if( fetchAccount(transactionDTO.getAccountNumber()).getBalance() != balance+transactionDTO.getAmount()){
+                response.add(true);
+                response.add(balance);
+                response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
+                transactionDTO.setStatus(TransactionStatusTypes.Completed);
+            }else{
+                response.add(false);
+                response.add("Technical problem while Deposit : Error 89xhvdjb");
+                transactionDTO.setStatus(TransactionStatusTypes.DepositErr);
+
+            }
             tools.display_message(response);
             return response;
 
         }catch (NullPointerException e){
             response.add(false);
             response.add("Unable To fetch account : Error 89xhvdjb");
+            transactionDTO.setStatus(TransactionStatusTypes.DepositErr);
             tools.display_message(response);
             return response;
 
@@ -70,19 +80,29 @@ public class BankOperations implements BankFunctions{
             if(balance<transactionDTO.getAmount()){
                 response.add(false);
                 response.add(balance);
+                transactionDTO.setStatus(TransactionStatusTypes.InsufBal);
                 System.out.println("Failed : Your account has less Balance. !!!!");
                 return response;
             }
             fetchAccount(transactionDTO.getAccountNumber()).setBalance(balance-transactionDTO.getAmount());
-            response.add(true);
-            response.add(balance);
-            response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
+            if( fetchAccount(transactionDTO.getAccountNumber()).getBalance() != balance-transactionDTO.getAmount()){
+                response.add(true);
+                response.add(balance);
+                response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
+                transactionDTO.setStatus(TransactionStatusTypes.Completed);
+            }else{
+                response.add(false);
+                response.add("Technical problem while Deposit : Error 89xhvdjb");
+                transactionDTO.setStatus(TransactionStatusTypes.WithdrawErr);
+
+            }
             tools.display_message(response);
             return response;
 
         }catch (NullPointerException e){
             response.add(false);
             response.add("Unable To fetch account : Error 89xhvdjb");
+            transactionDTO.setStatus(TransactionStatusTypes.WithdrawErr);
             tools.display_message(response);
             return response;
         }
@@ -96,34 +116,58 @@ public class BankOperations implements BankFunctions{
         if(fetchAccount(transactionDTO.getAccountNumber()).getBalance()<transactionDTO.getAmount()){
             response.add(false);
             response.add("Your account have insufficient balance");
+            transactionDTO.setStatus(TransactionStatusTypes.InsufBal);
             tools.display_message(response);
             return response;
         }
 
            try {
-               int sourceBalance =  fetchAccount(transactionDTO.getAccountNumber()).getBalance();
-               fetchAccount(transactionDTO.getAccountNumber()).setBalance(sourceBalance-transactionDTO.getAmount());
-               response.add(true);
-               System.out.println("Amount credited from your account: "+transactionDTO.getAccountNumber());
+               int sourceInitialBalance =  fetchAccount(transactionDTO.getAccountNumber()).getBalance();
+               fetchAccount(transactionDTO.getAccountNumber()).setBalance(sourceInitialBalance-transactionDTO.getAmount());
+               if(fetchAccount(transactionDTO.getDestinAccountNumber()).getBalance() == sourceInitialBalance-transactionDTO.getAmount()){
+                   response.add(true);
+                   transactionDTO.setStatus(TransactionStatusTypes.DebitDone);
+                   System.out.println("Amount Debited to: "+transactionDTO.getDestinAccountNumber());
+               }else{
+                   fetchAccount(transactionDTO.getDestinAccountNumber()).setBalance(sourceInitialBalance);
+                   transactionDTO.setStatus(TransactionStatusTypes.DebitErr);
+                   response.add(false);
+               }
+//               response.add(true);
+//               System.out.println("Amount credited from your account: "+transactionDTO.getAccountNumber());
            }catch (Exception e){
                response.add(false);
                return response;
            }
-
+/*
+    Destination Bank account money deposit process
+    fetches the bank account balance and then perform operation on it and checks if the value is updated.
+ */
         try {
-            int destinBalance = fetchAccount(transactionDTO.getDestinAccountNumber()).getBalance();
-            fetchAccount(transactionDTO.getDestinAccountNumber()).setBalance(destinBalance+transactionDTO.getAmount());
-            response.add(true);
-            System.out.println("Amount Debited to: "+transactionDTO.getDestinAccountNumber());
+            int destinInitialBalance = fetchAccount(transactionDTO.getDestinAccountNumber()).getBalance();
+            fetchAccount(transactionDTO.getDestinAccountNumber()).setBalance(destinInitialBalance+transactionDTO.getAmount());
+            if(fetchAccount(transactionDTO.getDestinAccountNumber()).getBalance() == destinInitialBalance+transactionDTO.getAmount()){
+                response.add(true);
+                transactionDTO.setStatus(TransactionStatusTypes.CreditDone);
+                System.out.println("Amount Credited to: "+transactionDTO.getDestinAccountNumber());
+            }else{
+                fetchAccount(transactionDTO.getDestinAccountNumber()).setBalance(destinInitialBalance);
+                transactionDTO.setStatus(TransactionStatusTypes.CreditErr);
+                response.add(false);
+            }
+
         }catch (Exception e){
             response.add(false);
+            transactionDTO.setStatus(TransactionStatusTypes.CreditErr);
             return response;
         }
 
         if((boolean) response.get(1) && (boolean) response.get(2)){
             response.add(1,true);
+            transactionDTO.setStatus(TransactionStatusTypes.Completed);
         }else{
             response.add(1,false);
+            transactionDTO.setStatus(TransactionStatusTypes.Cancelled);
         }
 
         return response;

@@ -8,6 +8,8 @@ public class TransactionDTO {
     private String transactionAction;
     private long destinAccountNumber;
     private int amount;
+    private TransactionStatusTypes status;
+
 
     public int getTransactionActionId() {
         return transactionActionId;
@@ -56,5 +58,13 @@ public class TransactionDTO {
 
     public void setAccountNumber(long accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    public TransactionStatusTypes getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatusTypes status) {
+        this.status = status;
     }
 }
