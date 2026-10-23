@@ -45,7 +45,7 @@ public class BankOperations implements BankFunctions{
             int balance = fetchAccount(transactionDTO.getAccountNumber()).getBalance();
             fetchAccount(transactionDTO.getAccountNumber()).setBalance(balance+transactionDTO.getAmount());
 
-            if( fetchAccount(transactionDTO.getAccountNumber()).getBalance() != balance+transactionDTO.getAmount()){
+            if( fetchAccount(transactionDTO.getAccountNumber()).getBalance() == balance+transactionDTO.getAmount()){
                 response.add(true);
                 response.add(balance);
                 response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
@@ -85,7 +85,7 @@ public class BankOperations implements BankFunctions{
                 return response;
             }
             fetchAccount(transactionDTO.getAccountNumber()).setBalance(balance-transactionDTO.getAmount());
-            if( fetchAccount(transactionDTO.getAccountNumber()).getBalance() != balance-transactionDTO.getAmount()){
+            if( fetchAccount(transactionDTO.getAccountNumber()).getBalance() == balance-transactionDTO.getAmount()){
                 response.add(true);
                 response.add(balance);
                 response.add(fetchAccount(transactionDTO.getAccountNumber()).getBalance());
