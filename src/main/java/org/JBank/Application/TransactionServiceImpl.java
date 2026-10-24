@@ -42,7 +42,7 @@ public class TransactionServiceImpl implements TransactionService{
 //        System.out.println("transactionDetails: "+transactionDTO.getAccountNumber()+"-"+transactionDTO.getTransactionAction());
         bank.performTransaction(transactionDTO);
         transactionDTO.setTransactionAction(op);
-
+        bank.addTransactionToList(transactionDTO);
         return transactionDTO;
     }
 
@@ -60,6 +60,7 @@ public class TransactionServiceImpl implements TransactionService{
         transactionDTO.setTransactionActionId(actionId);
         transactionDTO.setTransactionAction(action.get(actionId));
         bank.performTransaction(transactionDTO);
+        bank.addTransactionToList(transactionDTO);
         return transactionDTO;
 
     }

@@ -31,9 +31,11 @@ public class HelperMethods {
 
         public List<TransactionDTO> generateTransaction(int num, List<BankAccount> bankAccounts){
             List<TransactionDTO> transactionDTOS= new ArrayList<>();
+            System.out.println(bankAccounts.size()+" Bank account Size");
             for (int i=0; i<num; i++){
-                System.out.println("creating Transaction-"+i);
-                int action = rand.nextInt(2)+1;
+                System.out.print("creating Transaction-"+i);
+                int action = rand.nextInt(3)+1;
+                System.out.print(action);
                 TransactionService transactionService = new TransactionServiceImpl(bankAccounts.getFirst().getBank());
                 TransactionDTO transactionDTO = new TransactionDTO();
                 if(action==1 || action == 2){
@@ -43,9 +45,10 @@ public class HelperMethods {
                           action
                   );
               } else {
+                    List<Long> bankAccountList = getTwoRandomBankAccount(bankAccounts);
                     transactionDTO = transactionService.interAccountTransaction(
-                            getTwoRandomBankAccount(bankAccounts).getFirst(),
-                            getTwoRandomBankAccount(bankAccounts).getLast(),
+                            bankAccountList.getFirst(),
+                            bankAccountList.getLast(),
                             getRandomAmount(),
                             action
                     );

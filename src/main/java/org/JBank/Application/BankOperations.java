@@ -133,8 +133,6 @@ public class BankOperations implements BankFunctions{
                    transactionDTO.setStatus(TransactionStatusTypes.DebitErr);
                    response.add(false);
                }
-//               response.add(true);
-//               System.out.println("Amount credited from your account: "+transactionDTO.getAccountNumber());
            }catch (Exception e){
                response.add(false);
                return response;
@@ -179,7 +177,7 @@ public class BankOperations implements BankFunctions{
 class Tools{
     public void display_message(List<Object> response) {
 
-        if (Objects.equals((String) response.getFirst(), "Transfer")) {
+        if (Objects.equals(response.getFirst(), "Transfer")) {
             for (Object o : response) {
                 System.out.println(o);
             }

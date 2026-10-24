@@ -11,8 +11,7 @@ public class Main {
 
         Bank bank = new Bank();
 
-        HelperMethods helperMethods = new HelperMethods();
-        List<BankAccount> bankAccounts =  helperMethods.accountGenerator(5, bank);
+
         for(BankAccount acc : bankAccounts){
             System.out.println(acc.getAccNumber()+" "+ acc.getBalance());
         }

@@ -16,9 +16,11 @@ public class ApplicationTools {
 
     private final Scanner sc = new Scanner(System.in);
 
-    private final Bank bank;
-    public ApplicationTools(Bank bank) {
+    private final BankApplicationTools bank;
+    private final AdminTools adminTools;
+    public ApplicationTools(Bank bank, AdminTools adminTools) {
         this.bank=bank;
+        this.adminTools=adminTools;
     }
 
 
@@ -34,6 +36,13 @@ public class ApplicationTools {
             if(userOption == 9){
                 System.out.println("Exiting application... Goodbye!");
                 return;
+            }
+            if(userOption == 999){
+                System.out.println("Enter password : ");
+                Long adminPass = sc.nextLong();
+                if(bank.adminVerify(adminPass)){
+                    bank.openAdminApplication();
+                }
             }
 
             Application(userOption);
