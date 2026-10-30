@@ -10,6 +10,10 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HelperMethods {
+
+
+
+
     protected Random rand = new Random();
     public List<BankAccount> accountGenerator(int num, Bank bank){
         List<BankAccount> accounts = new ArrayList<>();
@@ -25,15 +29,15 @@ public class HelperMethods {
                 throw new RuntimeException(e);
             }
         }
-
+        bank.setBankAccountList(accounts);
         return accounts;
     }
 
         public List<TransactionDTO> generateTransaction(int num, List<BankAccount> bankAccounts){
             List<TransactionDTO> transactionDTOS= new ArrayList<>();
-            System.out.println(bankAccounts.size()+" Bank account Size");
-            for (int i=0; i<num; i++){
-                System.out.print("creating Transaction-"+i);
+            System.out.println(bankAccounts.size()+" aBank account Size");
+
+                System.out.print("creating Transaction-"+1);
                 int action = rand.nextInt(3)+1;
                 System.out.print(action);
                 TransactionService transactionService = new TransactionServiceImpl(bankAccounts.getFirst().getBank());
@@ -54,10 +58,43 @@ public class HelperMethods {
                     );
                 }
                 transactionDTOS.add(transactionDTO);
-            }
+
             return transactionDTOS;
 
         }
+
+
+    public List<TransactionDTO> generateOneTransaction(List<BankAccount> bankAccounts){
+        List<TransactionDTO> transactionDTOS= new ArrayList<>();
+        System.out.println(bankAccounts.size()+" aBank account Size");
+
+        System.out.print("creating Transaction-"+1);
+        int action = rand.nextInt(3)+1;
+        System.out.print(action);
+        TransactionService transactionService = new TransactionServiceImpl(bankAccounts.getFirst().getBank());
+        TransactionDTO transactionDTO = new TransactionDTO();
+        if(action==1 || action == 2){
+            transactionDTO = transactionService.selfTransaction(
+                    getRandomBankAccount(bankAccounts),
+                    getRandomAmount(),
+                    action
+            );
+        } else {
+            List<Long> bankAccountList = getTwoRandomBankAccount(bankAccounts);
+            transactionDTO = transactionService.interAccountTransaction(
+                    bankAccountList.getFirst(),
+                    bankAccountList.getLast(),
+                    getRandomAmount(),
+                    action
+            );
+        }
+        transactionDTOS.add(transactionDTO);
+
+        return transactionDTOS;
+
+    }
+
+//        public void generate
 
         public long getRandomBankAccount(List<BankAccount> bankAccounts){
             int index = rand.nextInt(bankAccounts.size());
@@ -77,4 +114,24 @@ public class HelperMethods {
         return rand.nextInt(500);
         }
 
+        public void startWorker(){
+        }
+
+
 }
+
+
+//class Worker implements Runnable{
+//
+//    private final List<BankAccount> bankAccounts;
+//public Worker (List<BankAccount> bankAccounts){
+//    this.bankAccounts=bankAccounts;
+//}
+//
+//
+//    @Override
+//    public void run() {
+//        HelperMethods helperMethods = new HelperMethods();
+//        helperMethods.generateTransaction(bankAccounts);
+//    }
+//}

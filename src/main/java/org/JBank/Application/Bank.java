@@ -1,6 +1,8 @@
 package org.JBank.Application;
 
 
+import org.JBank.Simulation.HelperMethods;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +14,8 @@ public class Bank implements BankApplicationTools{
     private long grandTotal;
     private List<BankAccount> bankAccountList = new ArrayList<>();
     private List<TransactionDTO> transactionsList = new ArrayList<>();
+    private HelperMethods helperMethods = new HelperMethods();
+
 
     private final BankFunctions bankFunctions = new BankOperations(this);
     private final TransactionService transactionService = new TransactionServiceImpl(this);
@@ -120,5 +124,10 @@ public void balanceTransaction(int userOption, Long accNumber){
     public void openAdminApplication() {
         adminTools.startAdminApplication();
     }
+
+    public void startUserSimulation(){
+
+    }
+
 }
 

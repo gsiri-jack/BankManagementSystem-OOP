@@ -2,7 +2,6 @@ package org.JBank.Application;
 
 import org.JBank.Simulation.HelperMethods;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -23,6 +22,7 @@ public class AdminTools {
     private final Map<Integer, String> adminActionsMenu = Map.of(
             91, "show Transactions" ,
             92, "perform Tests transactions",
+            93, "Get Accounts List",
             90, "exit"
     );
 
@@ -76,10 +76,9 @@ public class AdminTools {
 
             switch (adminOption) {
                 case 91 -> this.showTransactionsTable();
-                case 92 -> this.performTestTransaction();
-                case 90 -> {
-                    loopKey=false;
-                }
+                case 92 -> this.performTestTransaction(bank.getBankAccountList());
+                case 93 -> this.getBankAccountList();
+                case 90 -> loopKey=false;
             }
         }
     }
@@ -94,13 +93,21 @@ public class AdminTools {
 
     }
 
-    public void performTestTransaction(){
+    public void performTestTransaction(List<BankAccount> bankAccountList){
         System.out.println("Enter Size of tests: ");
         int num = sc.nextInt();
         System.out.println(bankAccountList.size()+"Size in  adminTools");
         helperMethods.generateTransaction(num, bankAccountList);
 
         System.out.println("Generated Transactions");
+    }
+
+    public void getBankAccountList(){
+        System.out.println("Bank AccountList");
+        for (BankAccount account : bank.getBankAccountList()){
+            System.out.println(account.getAccNumber()+"-"+account.getBalance());
+        }
+        System.out.println("End of List");
     }
 
     public void generateTestBankAccounts(int size, Bank bank){
