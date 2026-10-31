@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class Worker implements Runnable{
+public class Worker implements Runnable{
 
     private final List<BankAccount> bankAccounts;
 

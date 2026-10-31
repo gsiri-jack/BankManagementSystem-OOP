@@ -3,7 +3,7 @@ package org.JBank;
 import org.JBank.Application.Bank;
 import org.JBank.Application.BankAccount;
 import org.JBank.Simulation.HelperMethods;
-import org.JBank.Simulation.*;
+import org.JBank.Simulation.Worker;
 
 import java.util.List;
 
@@ -15,6 +15,9 @@ public class Main {
 
         helperMethods.accountGenerator(10, bank);
 
+        Worker worker = new Worker(bank.getBankAccountList());
+
+        worker.StartWork();
 
 
 //        for(BankAccount acc : bankAccounts){
@@ -22,7 +25,8 @@ public class Main {
 //        }
 //        bank.setBankAccountList(bankAccounts);
 
-//        bank.startApplication();
+        bank.startApplication();
+
 
 
 
